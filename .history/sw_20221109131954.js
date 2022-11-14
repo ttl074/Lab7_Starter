@@ -7,15 +7,6 @@ const CACHE_NAME = 'lab-7-starter';
 self.addEventListener('install', function (event) {
   event.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
-      const RECIPE_URLS = [
-        'https://introweb.tech/assets/json/1_50-thanksgiving-side-dishes.json',
-        'https://introweb.tech/assets/json/2_roasting-turkey-breast-with-stuffing.json',
-        'https://introweb.tech/assets/json/3_moms-cornbread-stuffing.json',
-        'https://introweb.tech/assets/json/4_50-indulgent-thanksgiving-side-dishes-for-any-holiday-gathering.json',
-        'https://introweb.tech/assets/json/5_healthy-thanksgiving-recipe-crockpot-turkey-breast.json',
-        'https://introweb.tech/assets/json/6_one-pot-thanksgiving-dinner.json',
-      ];
-      console.log(RECIPE_URLS)
       // B6. TODO - Add all of the URLs from RECIPE_URLs here so that they are
       //            added to the cache when the ServiceWorker is installed
       return cache.addAll([]);
@@ -30,24 +21,6 @@ self.addEventListener('activate', function (event) {
 
 // Intercept fetch requests and cache them
 self.addEventListener('fetch', function (event) {
-  event.respondWith(caches.open(CACHE_NAME).then((cache) => {
-    // Go to the cache first
-    return cache.match(event.request.url).then((cachedResponse) => {
-      // Return a cached response if we have one
-      if (cachedResponse) {
-        console.log("cached")
-        return cachedResponse;
-      }
-      // Otherwise, hit the network
-      return fetch(event.request).then((fetchedResponse) => {
-        // Add the network response to the cache for later visits
-        cache.put(event.request, fetchedResponse.clone());
-        console.log("fetched")
-        // Return the network response
-        return fetchedResponse;
-      });
-    });
-  }));
   // We added some known URLs to the cache above, but tracking down every
   // subsequent network request URL and adding it manually would be very taxing.
   // We will be adding all of the resources not specified in the intiial cache

@@ -39,7 +39,7 @@ function initializeServiceWorker() {
       if ("serviceWorker" in navigator) {
         try {
           const registration = await navigator.serviceWorker.register("./sw.js", {
-            scope: "./",
+            scope: "/",
           });
           if (registration.installing) {
             console.log("Service worker installing");
@@ -53,8 +53,8 @@ function initializeServiceWorker() {
         }
       }
     };
-    registerServiceWorker();
   })
+  registerServiceWorker();
   // EXPLORE - START (All explore numbers start with B)
   /*******************/
   // ServiceWorkers have many uses, the most common of which is to manage

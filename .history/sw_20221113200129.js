@@ -15,7 +15,6 @@ self.addEventListener('install', function (event) {
         'https://introweb.tech/assets/json/5_healthy-thanksgiving-recipe-crockpot-turkey-breast.json',
         'https://introweb.tech/assets/json/6_one-pot-thanksgiving-dinner.json',
       ];
-      console.log(RECIPE_URLS)
       // B6. TODO - Add all of the URLs from RECIPE_URLs here so that they are
       //            added to the cache when the ServiceWorker is installed
       return cache.addAll([]);
@@ -35,14 +34,13 @@ self.addEventListener('fetch', function (event) {
     return cache.match(event.request.url).then((cachedResponse) => {
       // Return a cached response if we have one
       if (cachedResponse) {
-        console.log("cached")
         return cachedResponse;
       }
       // Otherwise, hit the network
       return fetch(event.request).then((fetchedResponse) => {
         // Add the network response to the cache for later visits
         cache.put(event.request, fetchedResponse.clone());
-        console.log("fetched")
+
         // Return the network response
         return fetchedResponse;
       });

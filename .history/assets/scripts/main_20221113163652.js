@@ -33,28 +33,6 @@ async function init() {
  * of installing it and getting it running
  */
 function initializeServiceWorker() {
-  window.addEventListener('load', function(){
-    console.log("load")
-    const registerServiceWorker = async () => {
-      if ("serviceWorker" in navigator) {
-        try {
-          const registration = await navigator.serviceWorker.register("./sw.js", {
-            scope: "./",
-          });
-          if (registration.installing) {
-            console.log("Service worker installing");
-          } else if (registration.waiting) {
-            console.log("Service worker installed");
-          } else if (registration.active) {
-            console.log("Service worker active");
-          }
-        } catch (error) {
-          console.error(`Registration failed with ${error}`);
-        }
-      }
-    };
-    registerServiceWorker();
-  })
   // EXPLORE - START (All explore numbers start with B)
   /*******************/
   // ServiceWorkers have many uses, the most common of which is to manage
@@ -88,30 +66,24 @@ function initializeServiceWorker() {
  */
 async function getRecipes() {
   let curr = JSON.parse(localStorage.getItem('recipes'));
-  //console.log(curr)
-  //console.log(RECIPE_URLS)
+  console.log(curr)
   if (curr != null){
-    if (curr.length > 0){
-      return curr
-    }
-  }
-  const recipes = [];
-  //console.log(RECIPE_URLS)
-  return new Promise(async (resolve, reject) => {
+    return curr
+  } 
+  const arr = [];
+  return new Promise((resolve, reject) => {
     for (let i = 0; i < RECIPE_URLS.length; i++){
-      //console.log(RECIPE_URLS[i])
-      try {
-        const response = await fetch(RECIPE_URLS[i]);
-        const js = await response.json();
-        recipes.push(js);
+      try{
+        fetch(RECIPE_URLS[i])
+          .then((response) => response.json())
+          .then((data) => arr.push(data))
       }catch(error){
-        console.error(error);
-        reject(error);
+        console.log(error)
+        reject(error)
       }
-    saveRecipesToStorage(recipes);
+    saveRecipesToStorage(arr) 
     }
-    console.log(recipes);
-    resolve(recipes);
+    resolve(arr)
   });
   
     
